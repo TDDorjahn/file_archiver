@@ -1,1 +1,1 @@
-/usr/bin/g++ -g CMakeFiles/file_archiver.dir/main.cpp.o -o file_archiver  libfa_lib.a 
+/usr/bin/g++ -g -Wl,--dependency-file=CMakeFiles/file_archiver.dir/link.d CMakeFiles/file_archiver.dir/main.cpp.o -o file_archiver  libfa_lib.a

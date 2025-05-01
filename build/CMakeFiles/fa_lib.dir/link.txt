@@ -1,2 +1,2 @@
-/usr/bin/ar qc libfa_lib.a CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o
+/usr/bin/ar qc libfa_lib.a CMakeFiles/fa_lib.dir/main.cpp.o CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o
 /usr/bin/ranlib libfa_lib.a

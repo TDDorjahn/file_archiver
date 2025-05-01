@@ -1,4 +1,16 @@
 #pragma once
+
+/**
+ * @file structdef.hpp
+ * @author Tucker Dorjahn
+ * @brief Provides definitions for structures and their attributes.
+ * @version 0.1
+ * @date 2025-05-01
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include <bits/stat.h>
 #include <time.h>
 #include <sys/types.h>
@@ -8,6 +20,8 @@
 #include <format>
 #include <fstream>
 #include <string>
+
+#define INCONSTEXPR inline constexpr
 
 namespace fs = std::filesystem;
 using path = std::string; using file = std::string;

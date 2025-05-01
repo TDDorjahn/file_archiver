@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/dillan/coding/file_archiver/main.cpp" "CMakeFiles/fa_lib.dir/main.cpp.o" "gcc" "CMakeFiles/fa_lib.dir/main.cpp.o.d"
   "/home/dillan/coding/file_archiver/src/data_buffer.cpp" "CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o" "gcc" "CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o.d"
   )
 

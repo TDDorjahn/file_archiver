@@ -41,14 +41,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "fa_lib::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-fa_lib-Debug-d936547491da02f4344d.json",
+					"jsonFile" : "target-fa_lib-Debug-e60c89bede5bdf7d4567.json",
 					"name" : "fa_lib",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "file_archiver::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-file_archiver-Debug-5465df7967575f618150.json",
+					"jsonFile" : "target-file_archiver-Debug-b27bf1f43ec653ab069e.json",
 					"name" : "file_archiver",
 					"projectIndex" : 0
 				}
@@ -64,6 +64,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 8
 	}
 }

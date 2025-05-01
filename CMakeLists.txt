@@ -10,7 +10,7 @@ set(HEADER_DIR ${HOME_DIR}/interface)
 file(GLOB_RECURSE SRCS ${SRC_DIR}/*.cpp)
 file(GLOB_RECURSE HEADERS ${HEADER_DIR}/*.hpp)
 
-add_library(fa_lib ${SRCS})
-
-add_executable(file_archiver main.cpp)
+add_library(fa_lib main.cpp ${SRCS} ${HEADERS})
+target_include_directories(fa_lib PRIVATE ${HEADER_DIR})
+add_executable(file_archiver main.cpp ${HEADERS})
 target_link_libraries(file_archiver PRIVATE fa_lib)
