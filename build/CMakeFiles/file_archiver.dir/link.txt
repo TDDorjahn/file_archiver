@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/file_archiver.dir/main.cpp.o -o file_archiver  libfa_lib.a 

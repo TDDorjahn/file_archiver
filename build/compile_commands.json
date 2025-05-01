@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/dillan/coding/file_archiver/build",
+  "command": "/usr/bin/g++   -g -std=gnu++23 -o CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o -c /home/dillan/coding/file_archiver/src/data_buffer.cpp",
+  "file": "/home/dillan/coding/file_archiver/src/data_buffer.cpp",
+  "output": "CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o"
+},
+{
+  "directory": "/home/dillan/coding/file_archiver/build",
+  "command": "/usr/bin/g++   -g -std=gnu++23 -o CMakeFiles/file_archiver.dir/main.cpp.o -c /home/dillan/coding/file_archiver/main.cpp",
+  "file": "/home/dillan/coding/file_archiver/main.cpp",
+  "output": "CMakeFiles/file_archiver.dir/main.cpp.o"
+}
+]
