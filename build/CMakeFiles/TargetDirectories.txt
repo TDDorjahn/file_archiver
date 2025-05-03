@@ -1,4 +1,0 @@
-/home/dillan/coding/file_archiver/build/CMakeFiles/fa_lib.dir
-/home/dillan/coding/file_archiver/build/CMakeFiles/file_archiver.dir
-/home/dillan/coding/file_archiver/build/CMakeFiles/edit_cache.dir
-/home/dillan/coding/file_archiver/build/CMakeFiles/rebuild_cache.dir
