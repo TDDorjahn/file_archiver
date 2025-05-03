@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/fa_lib.dir/main.cpp.o"
-  "CMakeFiles/fa_lib.dir/main.cpp.o.d"
   "CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o"
   "CMakeFiles/fa_lib.dir/src/data_buffer.cpp.o.d"
   "libfa_lib.a"

@@ -11,20 +11,13 @@
  * 
  */
 
-#include <bits/stat.h>
-#include <time.h>
+#include <sys/stat.h>
 #include <sys/types.h>
-
-#include <chrono>
-#include <filesystem>
-#include <format>
-#include <fstream>
-#include <string>
+#include <time.h>
+#include <unistd.h>
+#include <stdio.h>
 
 #define INCONSTEXPR inline constexpr
-
-namespace fs = std::filesystem;
-using path = std::string; using file = std::string;
 
 /* Flags for typeflag */
 constexpr char normal_file = '0';
@@ -61,7 +54,7 @@ constexpr int HDR_SIZE = 512;
 
 struct archive_header {
 
-    file filename;
+    char name[100];
     char mode[8];
     char uid[8];
     char gid[8];
@@ -97,7 +90,12 @@ struct archive_stat_info {
 
     off_t archive_file_size;
 
-};
+    bool is_sparse;
 
-/* Data buffer fields */
-constexpr int buffer_size = 5;
+    unsigned sparse_major;
+    unsigned sparse_minor;
+    size_t sparse_blocks;
+    size_t sparse_map_size;
+    
+
+};
