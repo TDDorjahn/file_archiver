@@ -41,6 +41,7 @@ public:
 private:
 
     array<archive_header, N> buffer;
+    struct stat info;
 
     const char * _get_filename(char (&_name)[100]);
     const char * _get_mode(char (&_mode)[8]);

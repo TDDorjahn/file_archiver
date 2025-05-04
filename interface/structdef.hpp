@@ -16,6 +16,9 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <dirent.h>
+
+#include "sparse.hpp"
 
 #define INCONSTEXPR inline constexpr
 
@@ -95,7 +98,30 @@ struct archive_stat_info {
     unsigned sparse_major;
     unsigned sparse_minor;
     size_t sparse_blocks;
-    size_t sparse_map_size;
-    
+
+    sparse_map map;
+
+    bool is_target_dir;
+    bool skipped;
+    char * target_dir;
+
+    struct archive_stat_info * parent;
+    DIR * dir_stream;
+    int fd;
 
 };
+
+struct EOA {
+
+    char end_of_archive[1028] = {0};
+
+} typedef EOA;
+
+union block {
+
+    char buffer[BLOCKSIZE];
+    struct archive_header header;
+    struct sparse_header s_header;
+
+};
+

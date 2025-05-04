@@ -1,5 +1,5 @@
-#include <sys/types.h>
-#include <limits.h>
+#pragma once
+#include "sparse_def.hpp"
 
 struct sparse {
 
@@ -10,7 +10,8 @@ struct sparse {
 
 struct sparse_header {
 
-
+    sparse sp[SPARSES_IN_SPARSE_HEADER];
+    char is_extended;
 
 } typedef sparse_header;
 
@@ -34,7 +35,6 @@ struct buffer {
     static size_t size;
 
 } typedef buffer;
-
 
 struct sparse_map {
 
