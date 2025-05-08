@@ -1,19 +1,23 @@
-#include <stdio.h>
-#include <string.h>
-#include "sparse.hpp"
+#include "common.hpp"
+#include "file.hpp"
 
-int main(int argc, char * argv[]) {
+int main(int argc, char* argv[]) {
 
-    printf("Code for executable.\n");
+    if(argc != 2) {
 
-    struct buffer b;
-    b.buf = (char *)"Hello";
-    b.size = STRSIZE_BOUND;
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return 1;
 
-    printf("buffer: %s, size: %zu\n", b.buf, b.size);
+    }
 
-    printf("buffer: %s, size: %zu\n", b.buf, b.size);
+    const char * filename = argv[1];
+    struct stat f_stat;
+
+    struct file_attributes fa;
+    fa.from_stat(filename, f_stat);
+
+    fa.print_attributes();
+
 
     return 0;
-
 }

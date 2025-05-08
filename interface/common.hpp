@@ -1,0 +1,118 @@
+#pragma once
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <cstdint>
+
+/* file.hpp module */
+
+using chksum_t = uint64_t;
+using flag_t = char;
+using magic_t = char [6];
+using version_t = int16_t;
+using name_t = char [32];
+
+/* mode flags */
+constexpr int TSUID     = 04000; /* Set user ID on execution. */
+constexpr int TSGID     = 02000; /* Set group ID on execution. */
+constexpr int TSVTX     = 01000; /* reserved. */
+
+constexpr int TUREAD    = 00400; /* Read by owner. */
+constexpr int TUWRITE   = 00200; /* Write by owner. */
+constexpr int TUEXEC    = 00100; /* Execute or search by owner. */
+
+constexpr int TGREAD    = 00040; /* Read by group. */
+constexpr int TGWRITE   = 00020; /* Write by group. */
+constexpr int TGEXEC    = 00010; /* Execute or search by group. */
+
+constexpr int TOREAD    = 00004; /* Read by others. */
+constexpr int TOWRITE   = 00002; /* Write by others. */
+constexpr int TOEXEC    = 00001; /* Execute or search by others. */
+
+/* typeflag flags */
+constexpr char REGTYPE = '0'; /* Regular file. */
+constexpr char AREGTYPE = '\0'; /* Regular file. */
+constexpr char LNKTYPE = '1'; /* Link. */
+constexpr char SYMTYPE = '2'; /* Reserved. */
+constexpr char CHRTYPE = '3'; /* Character special. */
+constexpr char BLKTYPE = '4'; /* Block special. */
+constexpr char DIRTYPE = '5'; /* Directory. In this case, the size field has no meaning. */
+constexpr char FIFOTYPE = '6'; /* FIFO special. Archiving a FIFO file archives its existence, not contents. */
+constexpr char CONTTYPE = '7'; /* Reserved. */
+
+/**
+ * @brief Field Descriptions
+ * @name file_name
+ * @details The file's path name is created using this field, or by using this field in connection with the prefix field. 
+ * If the prefix field is included, the name of the file is prefix/name. 
+ * This field is null-terminated unless every character is non-null.
+ * 
+ * @name size
+ * @details Value is 0 when the typeflag field is set to LNKTYPE. This field is terminated with a space only.
+ * 
+ * @name mode
+ * @details Provides 9 bits for file permissions and 3 bits for SUID, SGID, and SVTX modes. All values for this field are in octal.
+ * During a read operation, the designated mode bits are ignored if the user does not have equal (or higher) permissions or if the modes are not supported.
+ * Numeric fields are terminated with a space and a null byte. See common.hpp:file.hpp module:mode flags for details.
+ * 
+ * @name uid
+ * @details Extracted from the corresponding archive fields unless a user with appropriate privileges restores the file.
+ * In that case, the field value is extracted from the password and group files instead.
+ * Numeric fields are terminated with a space and a null byte.
+ * 
+ * @name gid
+ * @details Extracted from the corresponding archive fields unless a user with appropriate privileges restores the file.
+ * In that case, the field value is extracted from the password and group files instead.
+ * Numeric fields are terminated with a space and a null byte.
+ * 
+ * @name mtime
+ * @details Value is obtained from the modification-time field of the stat subroutine. This field is terminated with a space only.
+ * 
+ * @name atime
+ * @details Value is obtained from the access-time field of the stat subroutine. This field is terminated with a space only.
+ * 
+ * @name ctime
+ * @details Value is obtained from the change-time field of the stat subroutine. This field is terminated with a space only.
+ * 
+ * @name chksum
+ * @details On calculation, the sum of all bytes in the header structure are treated as spaces.
+ * Each unsigned byte is added to an unsigned integer (initialized to 0) with at least 17-bits precision.
+ * Numeric fields are terminated with a space and a null byte.
+ * 
+ * @name flag
+ * @details Describes the type of file and subsequently how to handle them. 9 types are given (see common.hpp:file module:typeflag flags)
+ * 
+ * @name link_name
+ * @details Does not use the prefix field to produce a path name.
+ * If the path name or linkname value is too long, an error message is returned and any action on that file or directory is canceled.
+ * This field is null-terminated unless every character is non-null.
+ * 
+ * @name magic
+ * @details Contains the TMAGIC value, reflecting the extended tar archive format.
+ * In this case, the uname and gname fields will contain the ASCII representation for the file owner and the file group.
+ * If a file is restored by a user with the appropriate privileges, the uid and gid fields are extracted from the password and group files
+ * (instead of the corresponding archive fields).
+ * This field is null-terminated.
+ * 
+ * @name version
+ * @details Represents the version of the tar command used to archive the file. This field is terminated with a space only.
+ * 
+ * @name uname
+ * @details Contains the ASCII representation of the file owner. This field is null-terminated.
+ * 
+ * @name gname
+ * @details Contains the ASCII representation of the file group. This field is null-terminated.
+ * 
+ * @name devmajor
+ * @details Contains the device major number. Terminated with a space and a null byte.
+ * 
+ * @name devminor
+ * @details Contains the device minor number. Terminated with a space and a null byte.
+ * 
+ * @name prefix
+ * @details If this field is non-null, the file's path name is created using the prefix/name values together. Null-terminated unless every character is non-null.
+ */
+
+/* end file.hpp module */
