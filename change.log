@@ -1,0 +1,57 @@
+5/14/2025
+    .vscode (dir):
+    - launch.json contain options for building in debug or release mode (default arg is "Makefile"):
+        * (Debug) debug file_archiver
+        * (Release) run file_archiver
+    - settings.json:
+        * cmake.buildDirectory: "${workspaceFolder}/build/${buildType}"
+            ${buildType} comes from CMake Variant Selection.
+        * cmake.buildBeforeRun: true
+        * cmake.configureSettings: { "CMAKE_BUILD_TYPE": "${buildType}" }
+            sets cmake variable ${CMAKE_BUILD_TYPE} to Variant type.
+    
+    build (dir):
+    - Added directories Debug and Release for their respective builds.
+    - README's included in both directories for detailed build and run explanation.
+
+    Build Process:
+    - Added separate build processes for Debug and Release modes.
+    - Common interface files (.hpp files) have been placed into interface/common/ under
+      file_archiver_common library.
+    - Component interface files have remained in interface/, but are under the file_archiver_interface library,
+      which is linked with file_archiver_common library.
+    - Source files under src/ are in library file_archiver_src, linking to file_archiver_interface.
+
+    Before Building:
+    - Make sure to have CMake version >=3.20 installed.
+    - If using vscode, install CMake tools and the C/C++ and the C/C++ Extension Pack to make life easier.
+    - If not, you'll have to set up cmake-kits.json and cmake-variants.yaml yourself
+      to handle compiler settings, toolchain files, and give buildType and CMAKE_BUILD_TYPE a value.
+
+    Debug Build:
+    - Select Debug Variant:
+        * CMake Tools: Ctrl+Shift+P > CMake: Select Variant > Debug
+        * Without CMT: create cmake-variants.yaml in root or IDE subdirectory for the project (for vscode, project subdirectory is .vscode/)
+
+    cd build/Debug
+    cmake ../..
+    cmake --build . --config Debug
+
+    Release Build:
+    - Select Release Variant:
+        * CMake Tools: Ctrl+Shift+P > CMake: Select Variant > Release
+        * Without CMT: create cmake-variants.yaml in root or IDE subdirectory for the project (for vscode, project subdirectory is .vscode/)
+
+    cd build/Release
+    cmake ../..
+    cmake --build . --config Release
+
+    Running Builds:
+        With vscode:
+        - Go to Debugger side panel
+        - From the Run and Debug dropdown menu, select desired build type.
+            *Note: If you built on Debug variant, select (Debug) from Run and Debug menu. Likewise with Release.
+        - Click the "Start Debugging" button or press F5.
+        - If the build matches the launch configuration, Release shouldn't debug, but Debug will.
+
+    * Note: If you just selected a variant, cmake ../.. is not needed.

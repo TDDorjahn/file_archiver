@@ -2,19 +2,20 @@ cmake_minimum_required(VERSION 3.20)
 project(file_archiver)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE debug)
+endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+
 set(CMAKE_IGNORE_PATH "./build")
-set(HOME_DIR ${CMAKE_SOURCE_DIR})
-set(SRC_DIR ${HOME_DIR}/src)
-set(HEADER_DIR ${HOME_DIR}/interface)
+add_subdirectory(interface/common)
+add_subdirectory(interface)
+add_subdirectory(src)
 
-file(GLOB_RECURSE SRCS ${SRC_DIR}/*.cpp)
-file(GLOB_RECURSE HEADERS ${HEADER_DIR}/*.hpp)
+add_executable(file_archiver main.cpp)
 
-add_library(fa_lib ${SRCS} ${HEADERS})
-set_target_properties(fa_lib PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(fa_lib PRIVATE ${HEADER_DIR})
-
-add_executable(file_archiver main.cpp ${HEADERS})
-set_target_properties(file_archiver PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(file_archiver PRIVATE ${HEADER_DIR})
-target_link_libraries(file_archiver PRIVATE fa_lib)
+target_link_libraries(file_archiver PRIVATE file_archiver_interface file_archiver_src)

@@ -13,13 +13,21 @@
 #pragma once
 
 #include "def_common.hpp"
+#include "common.hpp"
 
 #ifdef LINUX_PLAT
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #else
 #include <Windows.h>
 #endif
 
+#include <chrono>
+#include <string>
 
 size_t get_terminal_width();
+auto timespec_to_timepoint(timespec& ts) -> std::chrono::system_clock::time_point;
+char file_type(mode_t mode);
+std::string mode_to_str(mode_t mode);

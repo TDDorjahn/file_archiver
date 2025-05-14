@@ -1,4 +1,3 @@
-#include "common.hpp"
 #include "file.hpp"
 
 int main(int argc, char* argv[]) {
@@ -14,10 +13,14 @@ int main(int argc, char* argv[]) {
     struct stat f_stat;
 
     struct file_attributes fa;
+
+    std::cout << "Size of (struct file_attributes).uninitialized: " << sizeof(fa) << "B\n";
+
     fa.from_stat(filename, f_stat);
 
-    fa.print_attributes();
+    std::cout << "Size of (struct file_attributes).initialized: " << sizeof(fa) << "B\n";
 
+    fa.print_attributes();
 
     return 0;
 }

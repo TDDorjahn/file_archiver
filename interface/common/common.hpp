@@ -6,13 +6,15 @@
 #include <stdio.h>
 #include <cstdint>
 
+/* If you're including any user files for the project here, you're using common wrong. */
+
 /* file.hpp module */
 
-using chksum_t = uint64_t;
+using chksum_t = uint32_t;
 using flag_t = char;
-using magic_t = char [6];
-using version_t = int16_t;
-using name_t = char [32];
+using magic_t = char *;
+using version_t = char [2];
+using name_t = char *;
 
 /* mode flags */
 constexpr int TSUID     = 04000; /* Set user ID on execution. */
@@ -30,6 +32,29 @@ constexpr int TGEXEC    = 00010; /* Execute or search by group. */
 constexpr int TOREAD    = 00004; /* Read by others. */
 constexpr int TOWRITE   = 00002; /* Write by others. */
 constexpr int TOEXEC    = 00001; /* Execute or search by others. */
+
+/* mode file mask */
+constexpr unsigned int FA_MASK = 0170000;
+
+/* mode file types */
+constexpr unsigned int FA_IFDIR = 0040000;
+constexpr unsigned int FA_IFCHR = 0020000;
+constexpr unsigned int FA_IFBLK = 0060000;
+constexpr unsigned int FA_IFREG = 0100000;
+constexpr unsigned int FA_IFIFO = 0010000;
+constexpr unsigned int FA_IFLNK = 0120000;
+constexpr unsigned int FA_IFSOCK = 0140000;
+
+/* mode file type tests */
+
+bool FA_ISTYPE(mode_t mode, unsigned int mask);
+bool FA_ISDIR(mode_t mode);
+bool FA_ISCHR(mode_t mode);
+bool FA_ISBLK(mode_t mode);
+bool FA_ISREG(mode_t mode);
+bool FA_ISFIFO(mode_t mode);
+bool FA_ISLNK(mode_t mode);
+bool FA_ISSOCK(mode_t mode);
 
 /* typeflag flags */
 constexpr char REGTYPE = '0'; /* Regular file. */
@@ -116,3 +141,4 @@ constexpr char CONTTYPE = '7'; /* Reserved. */
  */
 
 /* end file.hpp module */
+

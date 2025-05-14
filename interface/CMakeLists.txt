@@ -1,0 +1,5 @@
+add_library(file_archiver_interface INTERFACE)
+
+target_include_directories(file_archiver_interface INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(file_archiver_interface INTERFACE file_archiver_common)
+target_sources(file_archiver_interface INTERFACE buffer.hpp file.hpp semver.hpp version.hpp)
