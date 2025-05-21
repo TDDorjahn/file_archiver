@@ -1,1 +1,6 @@
 .git/
+build/Debug/
+build/Release/
+
+!build/Debug/README.md
+!build/Release/README.md

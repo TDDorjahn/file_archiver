@@ -12,3 +12,19 @@ bool FA_ISREG(mode_t mode) { return FA_ISTYPE(mode, FA_IFREG); }
 bool FA_ISFIFO(mode_t mode) { return FA_ISTYPE(mode, FA_IFIFO); }
 bool FA_ISLNK(mode_t mode) { return FA_ISTYPE(mode, FA_IFLNK); }
 bool FA_ISSOCK(mode_t mode) { return FA_ISTYPE(mode, FA_IFSOCK); }
+
+unsigned int sum_str(char * s) {
+
+    char * t;
+    unsigned sum = 0;
+
+    for(t = s; *t != '\0'; t++) 
+    {
+
+        sum += (unsigned)*t;
+
+    }
+
+    return sum;
+
+}

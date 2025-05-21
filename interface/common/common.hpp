@@ -142,3 +142,4 @@ constexpr char CONTTYPE = '7'; /* Reserved. */
 
 /* end file.hpp module */
 
+unsigned int sum_str(char * s);

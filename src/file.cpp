@@ -18,8 +18,6 @@ file_attributes::file_attributes() {
     ctime = {(long int)0, (long int)0};
     chksum = 0;
     flag = 0;
-    link_name = "";
-    magic = (char *)"";
     *version = {0};
     prefix = "";
 
@@ -90,7 +88,31 @@ void file_attributes::from_stat(const std::string &file_name, struct stat &st)
     atime = st.st_atim;
     ctime = st.st_ctim;
     _get_flag_type(flag, mode); //init flag
-    
+
+    if (flag == LNKTYPE || flag == SYMTYPE)
+    {
+
+        ssize_t link_str_len;
+
+        if ((link_str_len = readlink(file_name.c_str(), link_name, sizeof(link_name))) == -1)
+        {
+
+            perror("readlink.\n");
+        }
+        else
+        {
+
+            link_name[link_str_len] = '\0';
+        }
+
+    } else {
+
+        link_name = (char *)"\0";
+
+    }
+
+    magic = (char *)"FA\0";
+    version[0] = '1'; version[1] = '\0';
 
     struct passwd *owner_info = getpwuid(uid);
     struct group *group_info = getgrgid(gid);
@@ -114,6 +136,8 @@ void file_attributes::from_stat(const std::string &file_name, struct stat &st)
 
     dev_major = major(st.st_dev);
     dev_minor = minor(st.st_dev);
+
+    _do_chksum();
 
 }
 
@@ -159,11 +183,12 @@ void file_attributes::_get_flag_type(flag_t& flag, mode_t mode) {
 
 }
 
-unsigned int file_attributes::_do_chksum() {
+unsigned int file_attributes::_do_chksum()
+{
 
     /**
      * @brief _do_chksum() field list
-     * 
+     *
      * std::string file_name
      * unsigned long size
      * unsigned int mode
@@ -177,7 +202,7 @@ unsigned int file_attributes::_do_chksum() {
      *          long tv_nsec
      * unsigned int chksum
      * char flag
-     * std::string link_name
+     * char * link_name
      * char * magic
      * char version[2]
      * char * uname
@@ -185,9 +210,42 @@ unsigned int file_attributes::_do_chksum() {
      * unsigned int dev_major
      * unsigned int dev_minor
      * std::string prefix
-     * 
+     *
+     * @todo Implement experimental/reflection for iterative member variable names.
+     *
      */
 
+    if (chksum != 0)
+    {
+
+        perror("Erroneous initial chksum value.\n");
+        return -1;
+    }
+
+    chksum += size + mode + uid + gid + dev_major + dev_minor + static_cast<unsigned>(flag);                                                                                                                                                        // size, mode, uid, gid, d_maj, d_min, flag
+    chksum += static_cast<unsigned>(mtime.tv_sec) + static_cast<unsigned>(mtime.tv_nsec) + static_cast<unsigned>(atime.tv_sec) + static_cast<unsigned>(atime.tv_nsec) + static_cast<unsigned>(ctime.tv_sec) + static_cast<unsigned>(ctime.tv_nsec); // mtime, atime, ctime
+
+    for (auto &ch : file_name)
+    {
+
+        chksum += static_cast<unsigned int>(ch); // file_name
+    }
+
+    if (flag == LNKTYPE || flag == SYMTYPE)
+    {
+
+        chksum += sum_str(link_name); // link_name
+    }
+
+    chksum += sum_str(magic) + sum_str(uname) + sum_str(gname) + (unsigned)version[0] + (unsigned)version[1]; // magic, uname, gname, version
+
+    for(auto& it : prefix) {
+
+        chksum += (unsigned)it;
+
+    }
+
+    return chksum;
 }
 
 end_of_archive::end_of_archive() { _fill_eoa_flag(); }

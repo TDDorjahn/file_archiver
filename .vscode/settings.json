@@ -58,7 +58,11 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "ios": "cpp",
+        "cstring": "cpp",
+        "buffer": "cpp",
+        "netfwd": "cpp"
     },
     "cmake.buildDirectory": "${workspaceFolder}/build/${buildType}",
     "cmake.buildBeforeRun": true,

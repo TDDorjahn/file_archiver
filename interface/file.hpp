@@ -11,8 +11,10 @@
 #include <sys/sysmacros.h>
 #include <pwd.h>
 #include <grp.h>
+#include <string.h>
 
 #include "print_common.hpp"
+#include "file_stream.hpp"
 
 constexpr const char * EOA = "__EOA  ";
 constexpr const char * FAMAGIC = "fafmt"; //Only supporting our own format at the moment
@@ -32,7 +34,7 @@ private:
     struct timespec ctime;
     chksum_t chksum;
     flag_t flag;
-    std::string link_name;
+    char * link_name;
     magic_t magic;
     version_t version;
     name_t uname;
@@ -71,6 +73,6 @@ private:
 struct file_entry {
 
     file_attributes header;
-    std::array<char, 512> data;
+    file_stream stream;
 
 };
