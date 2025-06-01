@@ -17,33 +17,33 @@ using version_t = char [2];
 using name_t = char *;
 
 /* mode flags */
-constexpr int TSUID     = 04000; /* Set user ID on execution. */
-constexpr int TSGID     = 02000; /* Set group ID on execution. */
-constexpr int TSVTX     = 01000; /* reserved. */
+static constexpr int TSUID     = 04000; /* Set user ID on execution. */
+static constexpr int TSGID     = 02000; /* Set group ID on execution. */
+static constexpr int TSVTX     = 01000; /* reserved. */
 
-constexpr int TUREAD    = 00400; /* Read by owner. */
-constexpr int TUWRITE   = 00200; /* Write by owner. */
-constexpr int TUEXEC    = 00100; /* Execute or search by owner. */
+static constexpr int TUREAD    = 00400; /* Read by owner. */
+static constexpr int TUWRITE   = 00200; /* Write by owner. */
+static constexpr int TUEXEC    = 00100; /* Execute or search by owner. */
 
-constexpr int TGREAD    = 00040; /* Read by group. */
-constexpr int TGWRITE   = 00020; /* Write by group. */
-constexpr int TGEXEC    = 00010; /* Execute or search by group. */
+static constexpr int TGREAD    = 00040; /* Read by group. */
+static constexpr int TGWRITE   = 00020; /* Write by group. */
+static constexpr int TGEXEC    = 00010; /* Execute or search by group. */
 
-constexpr int TOREAD    = 00004; /* Read by others. */
-constexpr int TOWRITE   = 00002; /* Write by others. */
-constexpr int TOEXEC    = 00001; /* Execute or search by others. */
+static constexpr int TOREAD    = 00004; /* Read by others. */
+static constexpr int TOWRITE   = 00002; /* Write by others. */
+static constexpr int TOEXEC    = 00001; /* Execute or search by others. */
 
 /* mode file mask */
-constexpr unsigned int FA_MASK = 0170000;
+static constexpr unsigned int FA_MASK = 0170000;
 
 /* mode file types */
-constexpr unsigned int FA_IFDIR = 0040000;
-constexpr unsigned int FA_IFCHR = 0020000;
-constexpr unsigned int FA_IFBLK = 0060000;
-constexpr unsigned int FA_IFREG = 0100000;
-constexpr unsigned int FA_IFIFO = 0010000;
-constexpr unsigned int FA_IFLNK = 0120000;
-constexpr unsigned int FA_IFSOCK = 0140000;
+static constexpr unsigned int FA_IFDIR = 0040000;
+static constexpr unsigned int FA_IFCHR = 0020000;
+static constexpr unsigned int FA_IFBLK = 0060000;
+static constexpr unsigned int FA_IFREG = 0100000;
+static constexpr unsigned int FA_IFIFO = 0010000;
+static constexpr unsigned int FA_IFLNK = 0120000;
+static constexpr unsigned int FA_IFSOCK = 0140000;
 
 /* mode file type tests */
 
@@ -57,15 +57,15 @@ bool FA_ISLNK(mode_t mode);
 bool FA_ISSOCK(mode_t mode);
 
 /* typeflag flags */
-constexpr char REGTYPE = '0'; /* Regular file. */
-constexpr char AREGTYPE = '\0'; /* Regular file. */
-constexpr char LNKTYPE = '1'; /* Link. */
-constexpr char SYMTYPE = '2'; /* Reserved. */
-constexpr char CHRTYPE = '3'; /* Character special. */
-constexpr char BLKTYPE = '4'; /* Block special. */
-constexpr char DIRTYPE = '5'; /* Directory. In this case, the size field has no meaning. */
-constexpr char FIFOTYPE = '6'; /* FIFO special. Archiving a FIFO file archives its existence, not contents. */
-constexpr char CONTTYPE = '7'; /* Reserved. */
+static constexpr char REGTYPE = '0'; /* Regular file. */
+static constexpr char AREGTYPE = '\0'; /* Regular file. */
+static constexpr char LNKTYPE = '1'; /* Link. */
+static constexpr char SYMTYPE = '2'; /* Reserved. */
+static constexpr char CHRTYPE = '3'; /* Character special. */
+static constexpr char BLKTYPE = '4'; /* Block special. */
+static constexpr char DIRTYPE = '5'; /* Directory. In this case, the size field has no meaning. */
+static constexpr char FIFOTYPE = '6'; /* FIFO special. Archiving a FIFO file archives its existence, not contents. */
+static constexpr char CONTTYPE = '7'; /* Reserved. */
 
 /**
  * @brief Field Descriptions

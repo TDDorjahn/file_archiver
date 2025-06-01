@@ -5,8 +5,8 @@
 #include <fstream>
 #include <string>
 
-constexpr unsigned FILE_STREAM_MAX_SIZE = 512;
-constexpr unsigned FILE_STREAM_MAX_LEN = FILE_STREAM_MAX_SIZE - 1;
+static constexpr unsigned FILE_STREAM_MAX_SIZE = 512;
+static constexpr unsigned FILE_STREAM_MAX_LEN = FILE_STREAM_MAX_SIZE - 1;
 
 /**
  * @brief A stream of 512 bytes containing data of file contents.

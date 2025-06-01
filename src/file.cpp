@@ -31,29 +31,57 @@ file_attributes::file_attributes(std::string file_name)
 
 }
 
-//file_attributes::file_attributes(const file_attributes &fa) : file_attributes{ fa }
-//{}
+file_attributes::file_attributes(const file_attributes &fa)
+{
+
+    file_name = fa.file_name;
+    size = fa.size;
+    mode = fa.mode;
+    uid = fa.uid;
+    gid = fa.gid;
+    mtime = fa.mtime;
+    atime = fa.atime;
+    ctime = fa.ctime;
+    chksum = fa.chksum;
+    flag = fa.flag;
+    link_name = fa.link_name;
+    magic = fa.magic;
+    std::copy(fa.version, fa.version + 1, version);
+    uname = fa.uname;
+    gname = fa.gname;
+    dev_major = fa.dev_major;
+    dev_minor = fa.dev_minor;
+    prefix = fa.prefix;
+
+
+}
 
 file_attributes::file_attributes(file_attributes &&fa) noexcept :
     file_name(std::move(fa.file_name)),
-    size(std::move(fa.size)),
-    mode(std::move(fa.mode)),
-    uid(std::move(fa.uid)),
-    gid(std::move(fa.gid)),
-    mtime(std::move(fa.mtime)),
-    atime(std::move(fa.atime)),
-    ctime(std::move(fa.ctime)),
-    chksum(std::move(fa.chksum)),
-    flag(std::move(fa.flag)),
-    link_name(std::move(fa.link_name)),
-    magic(std::move(fa.magic)),
-    version(std::move(*fa.version)),
-    uname(std::move(fa.uname)),
-    gname(std::move(fa.gname)),
-    dev_major(std::move(fa.dev_major)),
-    dev_minor(std::move(fa.dev_minor)),
+    size(std::exchange(fa.size, 0)),
+    mode(std::exchange(fa.mode, 0)),
+    uid(std::exchange(fa.uid, 0)),
+    gid(std::exchange(fa.gid, 0)),
+    mtime(fa.mtime),
+    atime(fa.atime),
+    ctime(fa.ctime),
+    chksum(std::exchange(fa.chksum, 0)),
+    flag(std::exchange(fa.flag, '\0')),
+    link_name(std::exchange(fa.link_name, nullptr)),
+    magic(std::exchange(fa.magic, nullptr)),
+    version{fa.version[0], fa.version[1]},
+    uname(std::exchange(fa.uname, nullptr)),
+    gname(std::exchange(fa.gname, nullptr)),
+    dev_major(std::exchange(fa.dev_major, 0)),
+    dev_minor(std::exchange(fa.dev_minor, 0)),
     prefix(std::move(fa.prefix))
-{}
+{
+
+    fa.atime = {};
+    fa.mtime = {};
+    fa.ctime = {};
+
+}
 
 void file_attributes::from_stat(const std::string &file_name, struct stat &st)
 {
@@ -137,7 +165,7 @@ void file_attributes::from_stat(const std::string &file_name, struct stat &st)
     dev_major = major(st.st_dev);
     dev_minor = minor(st.st_dev);
 
-    _do_chksum();
+    calculate_checksum();
 
 }
 
@@ -183,69 +211,44 @@ void file_attributes::_get_flag_type(flag_t& flag, mode_t mode) {
 
 }
 
-unsigned int file_attributes::_do_chksum()
+chksum_t file_attributes::calculate_checksum()
 {
 
-    /**
-     * @brief _do_chksum() field list
-     *
-     * std::string file_name
-     * unsigned long size
-     * unsigned int mode
-     * unsigned int uid
-     * unsigned int gid
-     * struct timespec
-     *      mtime
-     *      atime
-     *      ctime
-     *          long tv_sec
-     *          long tv_nsec
-     * unsigned int chksum
-     * char flag
-     * char * link_name
-     * char * magic
-     * char version[2]
-     * char * uname
-     * char * gname
-     * unsigned int dev_major
-     * unsigned int dev_minor
-     * std::string prefix
-     *
-     * @todo Implement experimental/reflection for iterative member variable names.
-     *
-     */
+    uint32_t sum = 0;
 
-    if (chksum != 0)
-    {
+    auto process_field = [&sum](const auto& field) {
 
-        perror("Erroneous initial chksum value.\n");
-        return -1;
-    }
+        const uint32_t* bytes = reinterpret_cast<const uint32_t*>(&field);
+        for(size_t i = 0; i < sizeof(field); i++) {
 
-    chksum += size + mode + uid + gid + dev_major + dev_minor + static_cast<unsigned>(flag);                                                                                                                                                        // size, mode, uid, gid, d_maj, d_min, flag
-    chksum += static_cast<unsigned>(mtime.tv_sec) + static_cast<unsigned>(mtime.tv_nsec) + static_cast<unsigned>(atime.tv_sec) + static_cast<unsigned>(atime.tv_nsec) + static_cast<unsigned>(ctime.tv_sec) + static_cast<unsigned>(ctime.tv_nsec); // mtime, atime, ctime
+            sum ^= (bytes[i]) << (8 * (i % 4));
 
-    for (auto &ch : file_name)
-    {
+        }
 
-        chksum += static_cast<unsigned int>(ch); // file_name
-    }
+        std::cout << "Size of field: " << sizeof(field) << '\n';
 
-    if (flag == LNKTYPE || flag == SYMTYPE)
-    {
+    };
 
-        chksum += sum_str(link_name); // link_name
-    }
+    process_field(file_name.data());
+    process_field(size);
+    process_field(mode);
+    process_field(uid);
+    process_field(gid);
+    process_field(mtime);
+    process_field(atime);
+    process_field(ctime);
+    process_field(flag);
+    process_field(link_name);
+    process_field(magic);
+    process_field(version);
+    process_field(uname);
+    process_field(gname);
+    process_field(dev_major);
+    process_field(dev_minor);
+    process_field(prefix.data());
 
-    chksum += sum_str(magic) + sum_str(uname) + sum_str(gname) + (unsigned)version[0] + (unsigned)version[1]; // magic, uname, gname, version
-
-    for(auto& it : prefix) {
-
-        chksum += (unsigned)it;
-
-    }
-
-    return chksum;
+    return sum;
+    
 }
 
 end_of_archive::end_of_archive() { _fill_eoa_flag(); }

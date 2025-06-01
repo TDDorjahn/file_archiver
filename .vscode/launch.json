@@ -6,12 +6,13 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/file_archiver",
-            "args": ["Makefile"],
+            "args": ["../../test/example_file"],
             "stopAtEntry": false,
             "environment": [],
             "cwd": ".",
             "externalConsole": false,
             "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-pretting for gdb",

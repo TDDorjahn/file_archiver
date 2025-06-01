@@ -16,9 +16,9 @@
 #include "print_common.hpp"
 #include "file_stream.hpp"
 
-constexpr const char * EOA = "__EOA  ";
-constexpr const char * FAMAGIC = "fafmt"; //Only supporting our own format at the moment
-constexpr unsigned int FAMAGIC_LEN = 6;
+static constexpr const char * EOA = "__EOA  ";
+static constexpr const char * FAMAGIC = "fafmt"; //Only supporting our own format at the moment
+static constexpr unsigned int FAMAGIC_LEN = 6;
 consteval size_t MAGIC_LEN(magic_t magic);
 
 class file_attributes {
@@ -47,7 +47,7 @@ public:
 
     file_attributes();
     file_attributes(std::string file_name);
-    //file_attributes(const file_attributes& fa);
+    file_attributes(const file_attributes& fa);
     file_attributes(file_attributes&& fa) noexcept;
 
     void from_stat(const std::string& file_name, struct stat& st);
@@ -55,7 +55,7 @@ public:
 
 private:
     void _get_flag_type(flag_t& flag, mode_t mode);
-    unsigned int _do_chksum();
+    chksum_t calculate_checksum();
 
 };
 
